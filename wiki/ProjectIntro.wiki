@@ -1,0 +1,30 @@
+#summary Introduction to brad2.
+#labels Phase-Implementation,Featured
+
+= brad^2 =
+
+Welcome to the *brad^2* project.
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+== Features and design goals ==
+
+very important section, this
+
+== Documentation ==
+
+Your already there!
+
+== Download ==
+
+where to download
+
+== Participation ==
+
+someone might help
+
+or just feedback
+
