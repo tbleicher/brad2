@@ -7,6 +7,17 @@ Welcome to the *brad^2* project.
 
 
 
+== link testing ==
+
+TestPage via WikiLink! (no images/ prepended - should not work)
+
+[images/TestPage] via WikiLink! (with images/ prepended - might work)
+
+as explicit link http://code.google.com/p/brad2/wiki/images/TestPage
+
+and explicit with alternate text [http://code.google.com/p/brad2/wiki/images/TestPage Test Page]
+
+
 == About brad^2 ==
 
 === Scope ===

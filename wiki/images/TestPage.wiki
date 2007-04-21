@@ -1,0 +1,9 @@
+#summary test page for subdirectories in wiki
+#labels Featured
+
+
+
+this is a test page in the images subfolder
+
+
+it's full address is http://code.google.com/p/brad2/wiki/images/TestPage
