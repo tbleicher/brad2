@@ -1,7 +1,7 @@
 #summary Introduction to brad2.
 #labels Phase-Implementation,Featured
 
-= brad^2 =
+http://code.google.com/p/brad2/wiki/images/brad2_logo.png
 
 Welcome to the *brad^2* project.
 
