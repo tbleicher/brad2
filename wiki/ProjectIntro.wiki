@@ -9,7 +9,9 @@ Welcome to the *brad^2* project.
 
 == About brad^2 ==
 
-=== Scope (or _Resolution_ in management speak) ===
+=== Scope ===
+
+(or _resolution_ in management speak)
 
 Stable, flexible, extend able, feature rich etc.
 
@@ -94,9 +96,8 @@ We can use any help that is offered: from testing new features,
 updating the documentation pages to writing code and realising new
 ideas.
 
-You have to create an account on the [http://code.google.com/hosting
-Google Code Hosting] page to join our project. 
-
+You have to create an account on the [http://code.google.com/hosting Google Code Hosting]
+page to join our project. 
 
 
 
