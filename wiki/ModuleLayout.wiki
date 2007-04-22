@@ -1,0 +1,81 @@
+#summary brad2 module layout
+
+== Design Goal ==
+
+The Python modules used in brad2 should be created as components
+that are reuseable by other scripts and applications as well. We
+don't want to write the same Radiance scene parser again and again.
+To allow the 'import' of individual modules dependencies on brad2
+and Blender have to be minimised. The separation in frontend, logic
+and auxiliary code should be considered in the design phase of the
+individual modules. 
+
+The proposed file structure is designed with these requirements in
+mind. It will provide separate directories for the brad2 core modules,
+gui modules, independent scripts and Radiance related modules and
+functions.
+
+
+== File System and Module Layout ==
+
+{{{
+brad2 : the main code base for the exporter
+  |     [ this needs to be in the Blender Python search path ]
+  |
+  +== base : framework classes not dependent on Blender modules (was 'borg')
+  |          [session management, i18n, config, logging]
+  |
+  +== gui - interface code (formerly bliff)
+  |     |
+  |     +-- base : frame superclasses and basic functional classes
+  |     |          [BaseFrame, TextFrame, ImageFrame]
+  |     | 
+  |     +-- interface : controls events, user interaction and menus
+  |     |               [Inteface, Menu, settings, config, about, splash]
+  |     |
+  |     +-- layout : specialised frames for layout control
+  |     |            [Layout, ColumnLayout, RowLayout]
+  |     |
+  |     +-- listframe : listbox related classes
+  |     |
+  |     +-- export_frames: render options and export summary
+  |     +-- lumiaire_frames : Radiance luminaire data
+  |     +-- material_frames : Radiance material data
+  |     +-- sky_frames: set sky options (gensky, gendaylit, HDR, weatherdata)
+  |   [ +-- plot_frames: visualise numeric data (was rtrace) ]
+  |   [ +-- monitor_frames: display of render progress       ]
+  |   [ +-- report_frames: create and preview PDF reports    ]
+  | 
+  +== radiance : create and interface to Radiance files
+  |     |
+  |     +-- export : create Radiance project files
+  |     +-- luminaire : make luminaire data available in Blender
+  |     +-- material : assigne or create materials
+  |     +-- scene : combine all settings for Radiance export
+  |     +-- sky : basic sky class (better in raylib?)
+  |     
+  +== scene : wraps the Blender scene object
+              [scene, mesh, lamp, camera, material, empty]
+  
+    
+raylib : Python library related to Radiance apps and files
+  |      [ this should be included in PYTHONPATH by the user        ]
+  |      [ best way for this would be a Python C extension based on ]
+  |      [ the Radiance sources - but that might take a while       ]
+  |
+  +-- replacement for 'rad' in Python
+  +-- scene file parser
+  +-- ies2rad in Python
+  +-- ldt2rad
+  +-- *.pic reading, pvalue/pfilt/pcond etc. in Python
+
+
+scripts : stand alone scripts
+  |       [ this should be included in PATH by the user   ]
+  |       [ some of these scripts might be called by brad ]
+  |
+  +-- brtrace : distribute numeric rendering to multiple processes
+  +-- pdfplot : create PDF plots from numeric results
+  +-- weatherdatapdf : create PDF plots from weatherdata files
+}}}
+  
