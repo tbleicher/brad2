@@ -3,20 +3,22 @@
 == Design Goal ==
 
 The Python modules used in brad2 should be created as components
-that are reuseable by other scripts and applications as well. We
+that are reusable by other scripts and applications as well. We
 don't want to write the same Radiance scene parser again and again.
 To allow the 'import' of individual modules dependencies on brad2
-and Blender have to be minimised. The separation in frontend, logic
+and Blender have to be minimised. The separation in front-end, logic
 and auxiliary code should be considered in the design phase of the
 individual modules. 
 
 The proposed file structure is designed with these requirements in
 mind. It will provide separate directories for the brad2 core modules,
-gui modules, independent scripts and Radiance related modules and
+GUI modules, independent scripts and Radiance related modules and
 functions.
 
 
 == File System and Module Layout ==
+
+=== brad2 - the exporter core modules ===
 
 {{{
 brad2 : the main code base for the exporter
@@ -31,7 +33,7 @@ brad2 : the main code base for the exporter
   |     |          [BaseFrame, TextFrame, ImageFrame]
   |     | 
   |     +-- interface : controls events, user interaction and menus
-  |     |               [Inteface, Menu, settings, config, about, splash]
+  |     |               [Interface, Menu, settings, config, about, splash]
   |     |
   |     +-- layout : specialised frames for layout control
   |     |            [Layout, ColumnLayout, RowLayout]
@@ -39,7 +41,7 @@ brad2 : the main code base for the exporter
   |     +-- listframe : listbox related classes
   |     |
   |     +-- export_frames: render options and export summary
-  |     +-- lumiaire_frames : Radiance luminaire data
+  |     +-- luminaire_frames : Radiance luminaire data
   |     +-- material_frames : Radiance material data
   |     +-- sky_frames: set sky options (gensky, gendaylit, HDR, weatherdata)
   |   [ +-- plot_frames: visualise numeric data (was rtrace) ]
@@ -50,32 +52,61 @@ brad2 : the main code base for the exporter
   |     |
   |     +-- export : create Radiance project files
   |     +-- luminaire : make luminaire data available in Blender
-  |     +-- material : assigne or create materials
+  |     +-- material : assign or create materials
   |     +-- scene : combine all settings for Radiance export
   |     +-- sky : basic sky class (better in raylib?)
   |     
-  +== scene : wraps the Blender scene object
-              [scene, mesh, lamp, camera, material, empty]
-  
-    
+  +== scene : wraps the Blender scene objects
+  |           [scene, mesh, lamp, camera, material, empty]
+  |
+  +== aux : non essential modules
+        |
+        +-- VTK
+        +-- OpenDX
+        +-- database code
+}}}
+
+
+=== raylib - Python API for Radiance
+
+This library contains classes to interface to Radiance binaries
+and Radiance scene files. These classes are useful for all scripts
+that deal with Radiance related files. Ideally it would be a C-extension
+based on the Radiance C-source code to avoid recoding of the existing
+C functions. That might take a while, though.
+
+The location of this directory should be in PYTHONPATH to allow
+any script use of these classes and functions.
+
+
+{{{    
 raylib : Python library related to Radiance apps and files
   |      [ this should be included in PYTHONPATH by the user        ]
   |      [ best way for this would be a Python C extension based on ]
   |      [ the Radiance sources - but that might take a while       ]
   |
   +-- replacement for 'rad' in Python
-  +-- scene file parser
+  +-- parser for *.rif
+  +-- parser for *.rad and *.mat
   +-- ies2rad in Python
   +-- ldt2rad
   +-- *.pic reading, pvalue/pfilt/pcond etc. in Python
+  +-- unified command line handling ('getopt' is too limited)
+}}}
 
+=== scripts - stand alone scripts and tools ===
 
-scripts : stand alone scripts
-  |       [ this should be included in PATH by the user   ]
-  |       [ some of these scripts might be called by brad ]
+This directory will contain utilities to simplify complex processes
+for the end user. This directory should be included in the user's PATH. 
+Some of these scripts might even get a GUI front end in brad2 or provide
+command line versions of GUI modules that can be used without Blender
+running.
+
+{{{
+scripts
   |
   +-- brtrace : distribute numeric rendering to multiple processes
   +-- pdfplot : create PDF plots from numeric results
-  +-- weatherdatapdf : create PDF plots from weatherdata files
+  +-- weatherdatapdf : create PDF plots from weather data files
 }}}
   
