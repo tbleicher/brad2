@@ -1,7 +1,7 @@
 #summary Introduction to brad2.
 #labels Phase-Implementation,Featured
 
-http://home.arcor.de/tbleicher/brad2/images/brad2_logo.png
+http://tbleicher.googlepages.com/brad2_logo.png
 
 Welcome to the *brad^2* project.
 
@@ -100,6 +100,7 @@ ideas.
 
 You have to create an account on the [http://code.google.com/hosting Google Code Hosting]
 page to join our project. 
+
 
 
 
