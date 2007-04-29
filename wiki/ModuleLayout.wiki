@@ -5,10 +5,10 @@
 One of the main ideas behind the brad rewrite is to allow allow
 other Python scripts the import and use of brad2 functionality.
 This is achieved by introducing a new intermediate level
-between the user frontend code and the low level Radiance processes
-and files. To keep these modules reuseable by other scripts this level
+between the user front end code and the low level Radiance processes
+and files. To keep these modules reusable by other scripts this level
 is further divided in a functional part that only depends on Python
-and Python modules and a Blender dependend part with modules for the
+and Python modules and a Blender dependent part with modules for the
 GUI and the interaction with 3D scene elements.  
 
 http://tbleicher.googlepages.com/brad2_modules.png
@@ -33,7 +33,7 @@ TODO: update module names in picture
 
  * *bradproc*
    These classes provide control over complex rendering processes like
-   vector illuminace or DDS. They will use radlib to interface to the
+   vector illuminance or DDS. They will use radlib to interface to the
    Radiance command line tools. Their interface should be designed for
    GUI wrappers as well as simple command line tools.
 
@@ -41,7 +41,7 @@ TODO: update module names in picture
    This is the place for extension that are not essential for the
    functionality of brad2 as an exporter. They will provide code for
    visualisations etc. which uses advanced Python libraries. If these
-   libraries are not found on the system the functinality in these modules
+   libraries are not found on the system the functionality in these modules
    will not be available on only to a small extend.
 
  * *scripts*
@@ -55,7 +55,7 @@ TODO: update module names in picture
 
  * *bradscene* (was: bliff.scene)
    Classes in bradscene provide a higher level interface to the Blender
-   scnene objects. They will provide methods for the special requirements
+   scene objects. They will provide methods for the special requirements
    of a Radiance exporter which will make the gui modules less complex.
    Additionally it defines an abstraction layer to the ever changing
    Blender PyAPI which provides a way of migrating from one PyAPI version
@@ -92,7 +92,6 @@ brad2modules : [should be in PYTHONPATH]
   |     +-- luminaire : make luminaire data available in Blender
   |     +-- material : assign or create materials
   |     +-- scene : combine all settings for Radiance export
-  |     +-- sky : basic sky class (better in raylib?)
   |   [ +-- plot : visualise numeric data (was rtrace) ]
   |   [ +-- monitor : display of render progress       ]
   |
@@ -171,6 +170,7 @@ radlib : Python library related to Radiance apps and files
   +-- ldt2rad
   +-- *.pic reading, pvalue/pfilt/pcond etc. in Python
   +-- unified command line handling (Pythons getopt is too limited)
+  +-- sky : basic sky class for gensky and gendaylit
   +-- weatherDataFile
 }}}
 
