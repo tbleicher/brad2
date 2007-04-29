@@ -13,7 +13,10 @@ GUI and the interaction with 3D scene elements.
 
 http://tbleicher.googlepages.com/brad2_modules.png
 
-==== general purpose modules ====
+TODO: update module names in picture
+
+
+==== Python dependent modules ====
 
  * *radlib*
    This is a new Python library which will define a set of interface
@@ -28,13 +31,13 @@ http://tbleicher.googlepages.com/brad2_modules.png
    we need it for the GUI classes it should be used by the other
    components as well.
 
- * *process*
-   These classes provide control for complex rendering processes like
+ * *bradproc*
+   These classes provide control over complex rendering processes like
    vector illuminace or DDS. They will use radlib to interface to the
    Radiance command line tools. Their interface should be designed for
    GUI wrappers as well as simple command line tools.
 
- * *aux*
+ * *bradaux*
    This is the place for extension that are not essential for the
    functionality of brad2 as an exporter. They will provide code for
    visualisations etc. which uses advanced Python libraries. If these
@@ -46,6 +49,7 @@ http://tbleicher.googlepages.com/brad2_modules.png
    Some of them have a functionally equivalent GUI component in the
    brad2 module while others provide background services the GUI may
    rely on - like a rendering or database daemon.
+
 
 ==== Blender dependent modules ====
 
@@ -71,58 +75,74 @@ http://tbleicher.googlepages.com/brad2_modules.png
 
 == File System Hierarchy ==
 
+==== brad2 modules - the exporter components ====
+
 This section outlines a file system hierarchy for the new modules.
-
-
-{{{
-bradbase : framework classes not dependent on Blender modules (was 'borg')
-            [session management, i18n, config, logging]
-}}}
-
-
+The best solution seems to be flat hierarchy of module directories.
+The top level directory has to be in PYTHONPATH which will include
+it in the Blender modules search path as well.
 
 {{{
-brad2 : the main code base for the exporter
-  |     [ this needs to be in the Blender Python search path ]
-  |      
+brad2modules : [should be in PYTHONPATH]
+  |
+  +== brad2 : the main code base for the exporter
+  |     |     [ this needs to be in the Blender Python search path ]
+  |     | 
   |     +-- export : create Radiance project files
   |     +-- luminaire : make luminaire data available in Blender
   |     +-- material : assign or create materials
   |     +-- scene : combine all settings for Radiance export
   |     +-- sky : basic sky class (better in raylib?)
+  |   [ +-- plot : visualise numeric data (was rtrace) ]
+  |   [ +-- monitor : display of render progress       ]
   |
+  +== bradaux : non essential modules
+  |     |
+  |     +-- VTK
+  |     +-- OpenDX
+  |     +-- database code
+  |     +-- pdfreport : create and preview PDF reports
+  |
+  +== bradbase : framework classes (was 'bliff.borg')
+  |     |
+  |     +-- config
+  |     +-- i18n
+  |     +-- logging
+  |     +-- session
+  |
+  +== bradproc : interface to Radiance processes and files
+  |     |
+  |     +-- genHDRSky
+  |     +-- bradd : network render daemon
+  |     +-- lumdbd : luminaire data base
+  |     +-- matdbd : material data base
+  |     
   +== bradscene : wraps the Blender scene objects
-  |           [scene, mesh, lamp, camera, material, empty]
+  |     |
+  |     +-- bradscene
+  |     +-- bradmesh
+  |     +-- bradlamp
+  |     +-- bradcamera
+  |     +-- bradmaterial
+  |     +-- bradempty
   |
   +== bradtk - interface code (formerly bliff)
-  |     |
-  |     +-- base : frame superclasses and basic functional classes
-  |     |          [BaseFrame, TextFrame, ImageFrame]
-  |     | 
-  |     +-- interface : controls events, user interaction and menus
-  |     |               [Interface, Menu, settings, config, about, splash]
-  |     |
-  |     +-- layout : specialised frames for layout control
-  |     |            [Layout, ColumnLayout, RowLayout]
-  |     |
-  |     +-- listframe : listbox related classes
-  |     |
-  |     +-- export_frames: render options and export summary
-  |     +-- luminaire_frames : Radiance luminaire data
-  |     +-- material_frames : Radiance material data
-  |     +-- sky_frames: set sky options (gensky, gendaylit, HDR, weatherdata)
-  |   [ +-- plot_frames: visualise numeric data (was rtrace) ]
-  |   [ +-- monitor_frames: display of render progress       ]
-  |   [ +-- report_frames: create and preview PDF reports    ]
-  | 
-  +== process : interface to Radiance processes and files
-  |     |
-  |     
-  +== aux : non essential modules
         |
-        +-- VTK
-        +-- OpenDX
-        +-- database code
+        +-- base : frame superclasses and basic functional classes
+        |          [BaseFrame, TextFrame, ImageFrame]
+        | 
+        +-- interface : controls events, user interaction and menus
+        |               [Interface, Menu, settings, config, about, splash]
+        |
+        +-- layout : specialised frames for layout control
+        |            [Layout, ColumnLayout, RowLayout]
+        |
+        +-- listframe : listbox related classes
+        |
+        +-- export_frames: render options and export summary
+        +-- luminaire_frames : Radiance luminaire data
+        +-- material_frames : Radiance material data
+        +-- sky_frames: set sky options (gensky, gendaylit, HDR, weatherdata)    
 }}}
 
 
@@ -151,7 +171,9 @@ radlib : Python library related to Radiance apps and files
   +-- ldt2rad
   +-- *.pic reading, pvalue/pfilt/pcond etc. in Python
   +-- unified command line handling (Pythons getopt is too limited)
+  +-- weatherDataFile
 }}}
+
 
 ==== scripts - stand alone scripts and tools ====
 
