@@ -5,15 +5,15 @@
 The Python modules used in brad2 should be created as components
 that are reusable by other scripts and applications as well. We
 don't want to write the same Radiance scene parser again and again.
-To allow the 'import' of individual modules dependencies on brad2
-and Blender have to be minimised. The separation in front-end, logic
-and auxiliary code should be considered in the design phase of the
-individual modules. 
+Dependencies - especially on Blender - have to be minimised to allow
+the 'import' of base level modules in other scripts.
 
+The separation in front-end, logic and auxiliary code should be considered
+in the design phase of the individual modules. 
 
-http://pages.google.com/-/static_files/brad2_modules.png
+== Module Layout ==
 
-http://pages.google.com/-/static_files/brad2_modules.png/brad2_modules-full.jpg
+http://tbleicher.googlepages.com/brad2_modules.png
 
 The proposed file structure is designed with these requirements in
 mind. It will provide separate directories for the brad2 core modules,
@@ -21,18 +21,27 @@ GUI modules, independent scripts and Radiance related modules and
 functions.
 
 
-== File System and Module Layout ==
+== File System Hierarchy ==
 
 === brad2 - the exporter core modules ===
 
 {{{
 brad2 : the main code base for the exporter
   |     [ this needs to be in the Blender Python search path ]
+  |      
+  |     +-- export : create Radiance project files
+  |     +-- luminaire : make luminaire data available in Blender
+  |     +-- material : assign or create materials
+  |     +-- scene : combine all settings for Radiance export
+  |     +-- sky : basic sky class (better in raylib?)
   |
-  +== base : framework classes not dependent on Blender modules (was 'borg')
+  +== bradbase : framework classes not dependent on Blender modules (was 'borg')
   |          [session management, i18n, config, logging]
   |
-  +== gui - interface code (formerly bliff)
+  +== bradscene : wraps the Blender scene objects
+  |           [scene, mesh, lamp, camera, material, empty]
+  |
+  +== bradtk - interface code (formerly bliff)
   |     |
   |     +-- base : frame superclasses and basic functional classes
   |     |          [BaseFrame, TextFrame, ImageFrame]
@@ -53,17 +62,9 @@ brad2 : the main code base for the exporter
   |   [ +-- monitor_frames: display of render progress       ]
   |   [ +-- report_frames: create and preview PDF reports    ]
   | 
-  +== radiance : create and interface to Radiance files
+ +== process : interface to Radiance processes and files
   |     |
-  |     +-- export : create Radiance project files
-  |     +-- luminaire : make luminaire data available in Blender
-  |     +-- material : assign or create materials
-  |     +-- scene : combine all settings for Radiance export
-  |     +-- sky : basic sky class (better in raylib?)
   |     
-  +== scene : wraps the Blender scene objects
-  |           [scene, mesh, lamp, camera, material, empty]
-  |
   +== aux : non essential modules
         |
         +-- VTK
@@ -72,7 +73,7 @@ brad2 : the main code base for the exporter
 }}}
 
 
-=== raylib - Python API for Radiance
+=== raylib - Python API for Radiance ===
 
 This library contains classes to interface to Radiance binaries
 and Radiance scene files. These classes are useful for all scripts
