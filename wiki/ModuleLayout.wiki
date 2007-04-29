@@ -10,6 +10,11 @@ and Blender have to be minimised. The separation in front-end, logic
 and auxiliary code should be considered in the design phase of the
 individual modules. 
 
+
+http://pages.google.com/-/static_files/brad2_modules.png
+
+http://pages.google.com/-/static_files/brad2_modules.png/brad2_modules-full.jpg
+
 The proposed file structure is designed with these requirements in
 mind. It will provide separate directories for the brad2 core modules,
 GUI modules, independent scripts and Radiance related modules and
@@ -110,3 +115,5 @@ scripts
   +-- weatherdatapdf : create PDF plots from weather data files
 }}}
   
+
+
