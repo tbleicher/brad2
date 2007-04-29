@@ -15,33 +15,33 @@ http://tbleicher.googlepages.com/brad2_modules.png
 
 ==== general purpose modules ====
 
- * *radlib*<br/>
+ * *radlib*
    This is a new Python library which will define a set of interface
    classes to the Radiance render processes and files. In the future
    this might be done as a C extension based on the Radiance sources
    but for now we will have to do with system commands and plain Python.
  
- * *bradbase*<br/>
+ * *bradbase*
    This module defines the framework for the higher level modules.
    Classes defined here handle logging, session state, config options
    etc. The non-gui dependent scripts could do without it but since
    we need it for the GUI classes it should be used by the other
    components as well.
 
- * *process*<br/>
+ * *process*
    These classes provide control for complex rendering processes like
    vector illuminace or DDS. They will use radlib to interface to the
    Radiance command line tools. Their interface should be designed for
    GUI wrappers as well as simple command line tools.
 
- * *aux*<br/>
+ * *aux*
    This is the place for extension that are not essential for the
    functionality of brad2 as an exporter. They will provide code for
    visualisations etc. which uses advanced Python libraries. If these
    libraries are not found on the system the functinality in these modules
    will not be available on only to a small extend.
 
- * *scripts*<br/>
+ * *scripts*
    This is not a module but only a collection of command line scripts.
    Some of them have a functionally equivalent GUI component in the
    brad2 module while others provide background services the GUI may
@@ -49,7 +49,7 @@ http://tbleicher.googlepages.com/brad2_modules.png
 
 ==== Blender dependent modules ====
 
- * *bradscene* (was: bliff.scene)<br/>   
+ * *bradscene* (was: bliff.scene)
    Classes in bradscene provide a higher level interface to the Blender
    scnene objects. They will provide methods for the special requirements
    of a Radiance exporter which will make the gui modules less complex.
@@ -57,13 +57,13 @@ http://tbleicher.googlepages.com/brad2_modules.png
    Blender PyAPI which provides a way of migrating from one PyAPI version
    to the next.
    
- * *bradtk* (was: bliff.base)<br/>
+ * *bradtk* (was: bliff.base)
    This module defines the gui components that are used to build the
    brad2 interface. It deals with the underlying Blender.Draw and Blender.BGL
    modules. Most gui components can be created with the functions
    defined here and do not need to access BGL or Draw directly.
 
- * *brad2*<br/>
+ * *brad2*
    This module defines the final exporter interface and functionality
    by combining the Blender and Radiance modules into GUI components.
    
@@ -77,11 +77,11 @@ This section outlines a file system hierarchy for the new modules.
 {{{
 bradbase : framework classes not dependent on Blender modules (was 'borg')
             [session management, i18n, config, logging]
+}}}
 
 
 
-
-
+{{{
 brad2 : the main code base for the exporter
   |     [ this needs to be in the Blender Python search path ]
   |      
