@@ -68,7 +68,7 @@ on the project home page.
 
 There is nothing to download yet.
 
-Downloads will be made available as *.zip files in the download
+Downloads will be made available as `*.zip` files in the download
 section of this project (see tab on top of this page). These
 snapshots will be updated for every major release but will not
 contain the latest feature updates (scripting support for the
@@ -100,6 +100,8 @@ ideas.
 
 You have to create an account on the [http://code.google.com/hosting Google Code Hosting]
 page to join our project. 
+
+
 
 
 
