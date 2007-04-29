@@ -2,30 +2,86 @@
 
 == Design Goal ==
 
-The Python modules used in brad2 should be created as components
-that are reusable by other scripts and applications as well. We
-don't want to write the same Radiance scene parser again and again.
-Dependencies - especially on Blender - have to be minimised to allow
-the 'import' of base level modules in other scripts.
-
-The separation in front-end, logic and auxiliary code should be considered
-in the design phase of the individual modules. 
-
-== Module Layout ==
+One of the main ideas behind the brad rewrite is to allow allow
+other Python scripts the import and use of brad2 functionality.
+This is achieved by introducing a new intermediate level
+between the user frontend code and the low level Radiance processes
+and files. To keep these modules reuseable by other scripts this level
+is further divided in a functional part that only depends on Python
+and Python modules and a Blender dependend part with modules for the
+GUI and the interaction with 3D scene elements.  
 
 http://tbleicher.googlepages.com/brad2_modules.png
 
-The proposed file structure is designed with these requirements in
-mind. It will provide separate directories for the brad2 core modules,
-GUI modules, independent scripts and Radiance related modules and
-functions.
+==== general purpose modules ====
 
+ * *radlib*<br/>
+   This is a new Python library which will define a set of interface
+   classes to the Radiance render processes and files. In the future
+   this might be done as a C extension based on the Radiance sources
+   but for now we will have to do with system commands and plain Python.
+ 
+ * *bradbase*<br/>
+   This module defines the framework for the higher level modules.
+   Classes defined here handle logging, session state, config options
+   etc. The non-gui dependent scripts could do without it but since
+   we need it for the GUI classes it should be used by the other
+   components as well.
+
+ * *process*<br/>
+   These classes provide control for complex rendering processes like
+   vector illuminace or DDS. They will use radlib to interface to the
+   Radiance command line tools. Their interface should be designed for
+   GUI wrappers as well as simple command line tools.
+
+ * *aux*<br/>
+   This is the place for extension that are not essential for the
+   functionality of brad2 as an exporter. They will provide code for
+   visualisations etc. which uses advanced Python libraries. If these
+   libraries are not found on the system the functinality in these modules
+   will not be available on only to a small extend.
+
+ * *scripts*<br/>
+   This is not a module but only a collection of command line scripts.
+   Some of them have a functionally equivalent GUI component in the
+   brad2 module while others provide background services the GUI may
+   rely on - like a rendering or database daemon.
+
+==== Blender dependent modules ====
+
+ * *bradscene* (was: bliff.scene)<br/>   
+   Classes in bradscene provide a higher level interface to the Blender
+   scnene objects. They will provide methods for the special requirements
+   of a Radiance exporter which will make the gui modules less complex.
+   Additionally it defines an abstraction layer to the ever changing
+   Blender PyAPI which provides a way of migrating from one PyAPI version
+   to the next.
+   
+ * *bradtk* (was: bliff.base)<br/>
+   This module defines the gui components that are used to build the
+   brad2 interface. It deals with the underlying Blender.Draw and Blender.BGL
+   modules. Most gui components can be created with the functions
+   defined here and do not need to access BGL or Draw directly.
+
+ * *brad2*<br/>
+   This module defines the final exporter interface and functionality
+   by combining the Blender and Radiance modules into GUI components.
+   
+   
 
 == File System Hierarchy ==
 
-=== brad2 - the exporter core modules ===
+This section outlines a file system hierarchy for the new modules.
+
 
 {{{
+bradbase : framework classes not dependent on Blender modules (was 'borg')
+            [session management, i18n, config, logging]
+
+
+
+
+
 brad2 : the main code base for the exporter
   |     [ this needs to be in the Blender Python search path ]
   |      
@@ -34,9 +90,6 @@ brad2 : the main code base for the exporter
   |     +-- material : assign or create materials
   |     +-- scene : combine all settings for Radiance export
   |     +-- sky : basic sky class (better in raylib?)
-  |
-  +== bradbase : framework classes not dependent on Blender modules (was 'borg')
-  |          [session management, i18n, config, logging]
   |
   +== bradscene : wraps the Blender scene objects
   |           [scene, mesh, lamp, camera, material, empty]
@@ -62,7 +115,7 @@ brad2 : the main code base for the exporter
   |   [ +-- monitor_frames: display of render progress       ]
   |   [ +-- report_frames: create and preview PDF reports    ]
   | 
- +== process : interface to Radiance processes and files
+  +== process : interface to Radiance processes and files
   |     |
   |     
   +== aux : non essential modules
@@ -73,7 +126,7 @@ brad2 : the main code base for the exporter
 }}}
 
 
-=== raylib - Python API for Radiance ===
+==== radlib - Python API for Radiance ====
 
 This library contains classes to interface to Radiance binaries
 and Radiance scene files. These classes are useful for all scripts
@@ -86,21 +139,21 @@ any script use of these classes and functions.
 
 
 {{{    
-raylib : Python library related to Radiance apps and files
+radlib : Python library related to Radiance apps and files
   |      [ this should be included in PYTHONPATH by the user        ]
   |      [ best way for this would be a Python C extension based on ]
   |      [ the Radiance sources - but that might take a while       ]
   |
-  +-- replacement for 'rad' in Python
+  +-- replacement for rad in Python
   +-- parser for *.rif
   +-- parser for *.rad and *.mat
   +-- ies2rad in Python
   +-- ldt2rad
   +-- *.pic reading, pvalue/pfilt/pcond etc. in Python
-  +-- unified command line handling ('getopt' is too limited)
+  +-- unified command line handling (Pythons getopt is too limited)
 }}}
 
-=== scripts - stand alone scripts and tools ===
+==== scripts - stand alone scripts and tools ====
 
 This directory will contain utilities to simplify complex processes
 for the end user. This directory should be included in the user's PATH. 
@@ -114,6 +167,7 @@ scripts
   +-- brtrace : distribute numeric rendering to multiple processes
   +-- pdfplot : create PDF plots from numeric results
   +-- weatherdatapdf : create PDF plots from weather data files
+  +-- [more]
 }}}
   
 
