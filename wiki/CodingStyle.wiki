@@ -29,54 +29,45 @@ at other examples and decide what looks best.
 
 Unbreakable and unbendable rules that have to be followed -- or amended.
 
- # Use 4 spaces - not tabs - for indentation.
-
-   This follows the Python style guides but is obviously not very
-   popular among Blender scripters. They prefer tabs. We have to
-   chose one way.
+  # Use 4 spaces - not tabs - for indentation.
+    This follows the Python style guides but is apparently not very
+    popular among Blender scripters. They prefer tabs. We have to
+    chose one way.
 
 
 === Guidlines ===
 
- # See the Zen of Python below.
-
- # Use docstrings. A lot.
-
- # Keep lines below 80 characters.
-
- # Use `camelCaseNames` for long method and funcion names.
-
- # Use lower case only for local variables?
- 
- # Use leading `_underscores` for non-public methods and variables.
-
- # Use `UPPERCASE` for 'constant-like' variables.
-
- # Qualify external methods and functions with the modules name:
-
-{{{
+  # See the Zen of Python below.
+  # Use docstrings. A lot.
+  # Keep lines below 80 characters.
+  # Use `camelCaseNames` for long method and funcion names.
+  # Use lower case only for local variables?
+  # Use leading `_underscores` for non-public methods and variables.
+  # Use `UPPERCASE` for 'constant-like' variables.
+  # Qualify external methods and functions with the modules name:
+    
+    {{{
    import bradscene
    ...
    scn = bradscene.scene()
-}}}
+    }}}
 
    is better than
-   
-{{{
+    
+    {{{
    from bradscene import scene
    ...
    scn = scene()
-}}}
-
- # Use `veryLongNamesForMethods` when it helps to structure the code.
-
- # See PEP 8 for more ideas.
+    }}}
+  # Use `veryLongNamesForMethods` when it helps to structure the code.
+  # See PEP 8 for more ideas.
 
 
 == The Zen of Python ==
 
 (by Tim Peters)
 
+{{{
 Beautiful is better than ugly.
 Explicit is better than implicit.
 Simple is better than complex.
@@ -96,4 +87,7 @@ Although never is often better than *right* now.
 If the implementation is hard to explain, it's a bad idea.
 If the implementation is easy to explain, it may be a good idea.
 Namespaces are one honking great idea -- let's do more of those!
+}}}
+
+
 
